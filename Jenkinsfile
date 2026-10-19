@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    tools {
+        nodejs "my-nodejs"
+    }
+
     environment {
         NEXUS_ADDRESS = "161.35.197.245:8082"
     }
