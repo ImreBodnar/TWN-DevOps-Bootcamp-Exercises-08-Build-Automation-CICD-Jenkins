@@ -40,7 +40,7 @@ pipeline {
             steps {
                 script {
                     echo "----- BUILDING DOCKER IMAGE -----"
-                    echo "NEW VERSION: [$NEW_VERSION]"
+
                     sh "docker build -t nodejs-app:$NEW_VERSION ."
                 }
             }
@@ -51,10 +51,10 @@ pipeline {
                 script {
                     echo "----- PUSHING DOCKER IMAGE TO NEXUS -----"
 
-                    // withCredentials([usernamePassword(credentialsId: 'Nexus-Credentials', usernameVariable: 'NEXUS_USER', passwordVariable: 'NEXUS_PWD')]) {
-                    //     sh "echo $NEXUS_PWD | docker login -u $NEXUS_USER --password-stdin $NEXUS_ADDRESS"
-                    //     sh "docker push $NEXUS_ADDRESS/nodejs-app:1.0"
-                    // }
+                    withCredentials([usernamePassword(credentialsId: 'Nexus-Credentials', usernameVariable: 'NEXUS_USER', passwordVariable: 'NEXUS_PWD')]) {
+                        sh "echo $NEXUS_PWD | docker login -u $NEXUS_USER --password-stdin $NEXUS_ADDRESS"
+                        sh "docker push $NEXUS_ADDRESS/nodejs-app:$NEW_VERSION"
+                    }
                 }
             }
         }
