@@ -41,7 +41,7 @@ pipeline {
                 script {
                     echo "----- BUILDING DOCKER IMAGE -----"
 
-                    sh "docker build -t nodejs-app:$NEW_VERSION ."
+                    sh "docker build -t $NEXUS_ADDRESS/nodejs-app:$NEW_VERSION ."
                 }
             }
         }
