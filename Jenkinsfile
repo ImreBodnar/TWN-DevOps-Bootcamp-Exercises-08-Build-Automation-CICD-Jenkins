@@ -17,7 +17,7 @@ pipeline {
 
                     dir("app") {
                         sh "npm version minor --no-git-tag-version"
-                        env.NEW_VERSION = sh (script: "grep version package.json | cut -d '\"' -f4", returnStdout: true)
+                        env.NEW_VERSION = sh (script: "grep version package.json | cut -d '\"' -f4", returnStdout: true).trim()
                     }
                 }
             }
@@ -40,7 +40,7 @@ pipeline {
             steps {
                 script {
                     echo "----- BUILDING DOCKER IMAGE -----"
-                    echo "NEW VERSION: $NEW_VERSION"
+                    echo "NEW VERSION: [$NEW_VERSION]"
                     sh "docker build -t nodejs-app:$NEW_VERSION ."
                 }
             }
