@@ -17,8 +17,7 @@ pipeline {
 
                     dir("app") {
                         //echo "NEXUS address is: $NEXUS_ADDRESS"
-                        sh "grep version package.json | cut -d '\"' -f4"
-                        sh "npm version minor —no-git-tag-version"
+                        sh "npm version minor -no-git-tag-version"
                         sh "grep version package.json | cut -d '\"' -f4"
                     }
                 }
