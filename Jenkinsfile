@@ -19,8 +19,8 @@ pipeline {
                         //echo "NEXUS address is: $NEXUS_ADDRESS"
                         sh "npm version minor --no-git-tag-version"
 
-                        VERSION = sh (script: "grep version package.json | cut -d '\"' -f4", returnStdout: true)
-                        echo "NEW VERSION: $VERSION"
+                        env.NEW_VERSION = sh (script: "grep version package.json | cut -d '\"' -f4", returnStdout: true)
+                        echo "NEW VERSION: $NEW_VERSION"
                     }
                 }
             }
