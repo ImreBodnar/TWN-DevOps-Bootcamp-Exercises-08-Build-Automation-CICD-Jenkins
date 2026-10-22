@@ -16,7 +16,7 @@ pipeline {
                     echo "----- INCREMENTING VERSION -----"
 
                     dir("app") {
-                        sh "npm version minor --no-git-tag-version"
+                        sh 'npm version minor --no-git-tag-version'
                         env.NEW_VERSION = sh (script: "grep version package.json | cut -d '\"' -f4", returnStdout: true).trim()
                     }
                 }
@@ -29,8 +29,8 @@ pipeline {
                     echo "----- RUNNING TESTS -----"
 
                     dir("app") {
-                        sh "npm install"
-                        sh "npm test"
+                        sh 'npm install'
+                        sh 'npm test'
                     }
                 }
             }
@@ -41,7 +41,7 @@ pipeline {
                 script {
                     echo "----- BUILDING DOCKER IMAGE -----"
 
-                    sh "docker build -t $NEXUS_ADDRESS/nodejs-app:$NEW_VERSION ."
+                    sh 'docker build -t $NEXUS_ADDRESS/nodejs-app:$NEW_VERSION .'
                 }
             }
         }
@@ -52,8 +52,8 @@ pipeline {
                     echo "----- PUSHING DOCKER IMAGE TO NEXUS -----"
 
                     withCredentials([usernamePassword(credentialsId: 'Nexus-Credentials', usernameVariable: 'NEXUS_USER', passwordVariable: 'NEXUS_PWD')]) {
-                        sh "echo $NEXUS_PWD | docker login -u $NEXUS_USER --password-stdin $NEXUS_ADDRESS"
-                        sh "docker push $NEXUS_ADDRESS/nodejs-app:$NEW_VERSION"
+                        sh 'echo $NEXUS_PWD | docker login -u $NEXUS_USER --password-stdin $NEXUS_ADDRESS'
+                        sh 'docker push $NEXUS_ADDRESS/nodejs-app:$NEW_VERSION'
                     }
                 }
             }
