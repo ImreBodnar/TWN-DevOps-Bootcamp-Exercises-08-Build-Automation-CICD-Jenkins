@@ -40,7 +40,7 @@ COPY app/package*.json ./
 
 RUN npm install --production
 
-COPY . .
+COPY app/ .
 
 EXPOSE 3000
 
@@ -155,3 +155,17 @@ pipeline {
 **The Docker Image is built and uploaded into Nexus by my CI/CD pipeline:**
 
 ![The docker image is built and uploaded into nexus by cicd pipeline.](Exercise-2-Docker-Image-Uploaded-to-Nexus.jpg)
+
+## Exercise 3
+
+> To run the newly built Docker Image by my pipeline, I used my Jenkins server droplet.
+
+**I used these commands to run the newly build Docker Image by my pipeline:**
+
+```bash
+ssh -i ~/.ssh/digital_ocean_key root@JENKINS_ADDRESS
+
+docker login NEXUS_ADDRESS:8082
+docker run -d -p 8085:3000 --name MyNodeJsApp NEXUS_ADDRESS:8082/nodejs-app:1.3.0
+docker ps
+```
