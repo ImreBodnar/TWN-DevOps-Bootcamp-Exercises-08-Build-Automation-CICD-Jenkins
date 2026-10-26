@@ -169,3 +169,127 @@ docker login NEXUS_ADDRESS:8082
 docker run -d -p 8085:3000 --name MyNodeJsApp NEXUS_ADDRESS:8082/nodejs-app:1.3.0
 docker ps
 ```
+
+## Exercise 4
+
+**I add a new GitHub repository for my Jenkins shared library:**
+
+```bash
+cd Repositories
+mkdir TWN-DevOps-Bootcamp-Exercises-08-Build-Automation-CICD-Jenkins-Groovy
+cd TWN-DevOps-Bootcamp-Exercises-08-Build-Automation-CICD-Jenkins-Groovy
+
+# I moved the code here from the Jenkinfile...
+
+git init
+git add .
+git commit -m "Initial commit"
+git branch -M main
+git remote add origin https://github.com/ImreBodnar/TWN-DevOps-Bootcamp-Exercises-08-Build-Automation-CICD-Jenkins-Groovy.git
+git push -u origin main
+```
+
+**The new shared Jenkins library:**
+
+![The new shared jenkins library.](Exercise-4-1-The-New-Shared-Jenkins-Library.jpg)
+
+**You can find this GitHub repository here:**
+<https://github.com/ImreBodnar/TWN-DevOps-Bootcamp-Exercises-08-Build-Automation-CICD-Jenkins-Groovy>
+
+**This is the updated Jenkinsfile:**
+
+```groovy
+#!/user/bin/env groovy
+
+@Library('TWN-Jenkins-Shared-Library')_
+
+pipeline {
+    agent any
+
+    tools {
+        nodejs "my-nodejs"
+    }
+
+    environment {
+        NEXUS_ADDRESS = "161.35.197.245:8082"
+    }
+
+    stages {
+        stage("IncrementVersion") {
+            steps {
+                script {
+                    echo "----- INCREMENTING VERSION -----"
+
+                    dir("app") {
+                        IncrementVersion()
+                    }
+                }
+            }
+        }
+
+        stage("RunTests") {
+            steps {
+                script {
+                    echo "----- RUNNING TESTS -----"
+
+                    dir("app") {
+                        RunNpmTests()
+                    }
+                }
+            }
+        }
+
+        stage("BuildImage") {
+            steps {
+                script {
+                    echo "----- BUILDING DOCKER IMAGE -----"
+
+                    BuildDockerImage()
+                }
+            }
+        }
+
+        stage("PushImageToRegistry") {
+            steps {
+                script {
+                    echo "----- PUSHING DOCKER IMAGE TO NEXUS -----"
+
+                    PushDockerImageToRegistry()
+                }
+            }
+        }
+
+        stage("CommitNewVersion") {
+            steps {
+                script {
+                    echo "----- COMMITING & PUSHING NEW VERSION TO GIT -----"
+
+                    CommitNewVersion()
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            echo "END OF PIPELINE EXECUTION."
+        }
+
+        success {
+            echo "THE PIPELINE FINISHED SUCCESSFULLY!"
+        }
+
+        failure {
+            echo "SOME ERRORS OCCURED!"
+        }
+    }
+}
+```
+
+**I added the new shared library to the Jenkins settings:**
+
+![I added the new shared library to the jenkins settings](Exercise-4-2-The-Shared-Library-in-Jenkins-Settings.jpg)
+
+**Some successful runs in Jenkins:**
+
+![Some successful runs in jenkins.](Exercise-4-3-Some-Successful-Runs-in-Jenkins.jpg)
