@@ -20,8 +20,6 @@ pipeline {
                     echo "----- INCREMENTING VERSION -----"
 
                     dir("app") {
-                        //sh 'npm version minor --no-git-tag-version'
-                        //env.NEW_VERSION = sh (script: "grep version package.json | cut -d '\"' -f4", returnStdout: true).trim()
                         IncrementVersion()
                     }
                 }
@@ -34,8 +32,6 @@ pipeline {
                     echo "----- RUNNING TESTS -----"
 
                     dir("app") {
-                        //sh 'npm install'
-                        //sh 'npm test'
                         RunNpmTests()
                     }
                 }
@@ -47,7 +43,6 @@ pipeline {
                 script {
                     echo "----- BUILDING DOCKER IMAGE -----"
 
-                    //sh 'docker build -t $NEXUS_ADDRESS/nodejs-app:$NEW_VERSION .'
                     BuildDockerImage()
                 }
             }
@@ -58,10 +53,6 @@ pipeline {
                 script {
                     echo "----- PUSHING DOCKER IMAGE TO NEXUS -----"
 
-                    // withCredentials([usernamePassword(credentialsId: 'Nexus-Credentials', usernameVariable: 'NEXUS_USER', passwordVariable: 'NEXUS_PWD')]) {
-                    //     sh 'echo $NEXUS_PWD | docker login -u $NEXUS_USER --password-stdin $NEXUS_ADDRESS'
-                    //     sh 'docker push $NEXUS_ADDRESS/nodejs-app:$NEW_VERSION'
-                    // }
                     PushDockerImageToRegistry()
                 }
             }
@@ -72,13 +63,6 @@ pipeline {
                 script {
                     echo "----- COMMITING & PUSHING NEW VERSION TO GIT -----"
 
-                    // withCredentials([usernamePassword(credentialsId: 'github-credentials', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PWD')]) {
-                    //     sh 'git config user.email jenkins.ci@example.com'
-                    //     sh 'git config user.name JenkinsCI'
-                    //     sh 'git add .'
-                    //     sh 'git commit -m "CI pipeline: Version Increment"'
-                    //     sh 'git push https://$GIT_USER:$GIT_PWD@github.com/$GIT_USER/TWN-DevOps-Bootcamp-Exercises-08-Build-Automation-CICD-Jenkins.git HEAD:main'
-                    // }
                     CommitNewVersion()
                 }
             }
