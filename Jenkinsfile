@@ -1,3 +1,7 @@
+#!/user/bin/env groovy
+
+@Library('TWN-Jenkins-Shared-Library')_
+
 pipeline {
     agent any
 
@@ -29,8 +33,9 @@ pipeline {
                     echo "----- RUNNING TESTS -----"
 
                     dir("app") {
-                        sh 'npm install'
-                        sh 'npm test'
+                        //sh 'npm install'
+                        //sh 'npm test'
+                        RunNpmTests()
                     }
                 }
             }
