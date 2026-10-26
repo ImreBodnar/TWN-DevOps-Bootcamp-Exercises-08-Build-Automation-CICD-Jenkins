@@ -20,8 +20,9 @@ pipeline {
                     echo "----- INCREMENTING VERSION -----"
 
                     dir("app") {
-                        sh 'npm version minor --no-git-tag-version'
-                        env.NEW_VERSION = sh (script: "grep version package.json | cut -d '\"' -f4", returnStdout: true).trim()
+                        //sh 'npm version minor --no-git-tag-version'
+                        //env.NEW_VERSION = sh (script: "grep version package.json | cut -d '\"' -f4", returnStdout: true).trim()
+                        IncrementVersion()
                     }
                 }
             }
@@ -47,7 +48,7 @@ pipeline {
                     echo "----- BUILDING DOCKER IMAGE -----"
 
                     //sh 'docker build -t $NEXUS_ADDRESS/nodejs-app:$NEW_VERSION .'
-                    BuildDockerImage();
+                    BuildDockerImage()
                 }
             }
         }
