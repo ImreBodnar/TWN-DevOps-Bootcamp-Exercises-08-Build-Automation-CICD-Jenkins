@@ -1,4 +1,4 @@
-# Solutions for Exercises-07 Container-with-Docker
+# Solutions for Exercises-08-Build-Automation-with-Jenkins
 
 ## Exercise 0
 
