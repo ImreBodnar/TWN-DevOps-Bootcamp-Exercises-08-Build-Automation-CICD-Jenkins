@@ -43,7 +43,7 @@ pipeline {
                 script {
                     echo "----- BUILDING DOCKER IMAGE -----"
 
-                    BuildDockerImage 'nodejs-app'
+                    buildDockerImage('nodejs-app')
                 }
             }
         }
