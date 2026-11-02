@@ -20,7 +20,7 @@ pipeline {
                     echo "----- INCREMENTING VERSION -----"
 
                     dir("app") {
-                        IncrementVersion()
+                        incrementVersion()
                     }
                 }
             }
@@ -32,7 +32,7 @@ pipeline {
                     echo "----- RUNNING TESTS -----"
 
                     dir("app") {
-                        RunNpmTests()
+                        runNpmTests()
                     }
                 }
             }
@@ -63,7 +63,7 @@ pipeline {
                 script {
                     echo "----- COMMITING & PUSHING NEW VERSION TO GIT -----"
 
-                    CommitNewVersion()
+                    commitNewVersion('TWN-DevOps-Bootcamp-Exercises-08-Build-Automation-CICD-Jenkins.git')
                 }
             }
         }
