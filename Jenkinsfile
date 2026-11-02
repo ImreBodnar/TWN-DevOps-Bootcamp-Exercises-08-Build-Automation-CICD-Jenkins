@@ -53,7 +53,7 @@ pipeline {
                 script {
                     echo "----- PUSHING DOCKER IMAGE TO NEXUS -----"
 
-                    PushDockerImageToRegistry()
+                    pushDockerImageToRegistry('nodejs-app')
                 }
             }
         }
